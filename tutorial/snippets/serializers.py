@@ -13,6 +13,10 @@ class SnippetSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'highlight', 'owner',
                   'title', 'code', 'linenos', 'language', 'style']
 
+    def get_url(self, obj):
+        request = self.context.get('request')
+        return self.context['view'].reverse_action('detail', args=[obj.pk], request=request)
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     snippets = serializers.HyperlinkedRelatedField(many=True, view_name='snippet-detail', read_only=True)
